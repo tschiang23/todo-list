@@ -24,6 +24,8 @@ db.once('open', () => {
 
 app.engine('hbs', exphbs.engine({defaultLayout: 'main',extname:'.hbs'}));
 app.set('view engine', 'hbs')
+// 使用 body-parser 的 URL 編碼解析功能
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/',(req,res)=>{
     Todo.find() // 取出 Todo model 裡的所有資料
@@ -31,6 +33,18 @@ app.get('/',(req,res)=>{
         .then(todos => res.render('index',{todos}))
         .catch(error => console.error(error))
 })
+
+app.get('/todos/new', (req, res) => {
+    return res.render('new')
+  })
+
+app.post('/todos', (req, res) => {
+    const name = req.body.name.trim()       // 從 req.body 拿出表單裡的 name 資料
+    return Todo.create({ name })     // 存入資料庫
+      .then(() => res.redirect('/')) // 新增完成後導回首頁
+      .catch(error => console.log(error))
+  })
+
 
 app.listen(3000,()=>{
     console.log('App is running on http://localhost:3000.')
