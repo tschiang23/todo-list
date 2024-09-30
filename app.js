@@ -28,7 +28,7 @@ app.use(methodOverride('_method'))
 usePassport(app)
 
 app.use((req, res, next) => {
-    console.log(req.user)
+    // console.log(req.user)
     res.locals.isAuthenticated = req.isAuthenticated
     res.locals.user = req.user
     next()
