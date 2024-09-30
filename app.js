@@ -11,13 +11,13 @@ require('./config/mongoose')
 
 const app = express()
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs')
 
 app.use(session({
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     // cookie: { secure: true }
